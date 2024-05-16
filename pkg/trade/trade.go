@@ -1,7 +1,7 @@
 package trade
 
 import (
-	"fmt"
+	"log/slog"
 	"math"
 	"sort"
 	"sync"
@@ -49,8 +49,7 @@ func (tw *TradeWindow) AddTrades(newTrades []Trade) {
 		}
 	}
 	tw.Trades = filteredTrades
-
-	fmt.Printf("Trades after adding: %+v\n", tw.Trades)
+	slog.Debug("trades after adding", "trades", tw.Trades)
 }
 
 // GetValidTrades filters out trades that are considered outliers using the IQR method.
@@ -76,7 +75,7 @@ func (tw *TradeWindow) GetValidTrades() []Trade {
 	q3 := quantile(prices, 0.75)
 	iqr := q3 - q1
 
-	fmt.Printf("Q1: %f, Q3: %f, IQR: %f\n", q1, q3, iqr)
+	slog.Debug("calculate inter-quartile range", "Q1", q1, "Q3", q3, "IQR", iqr)
 
 	// Filter out outliers
 	validTrades := make([]Trade, 0)
@@ -86,7 +85,7 @@ func (tw *TradeWindow) GetValidTrades() []Trade {
 		}
 	}
 
-	fmt.Printf("Valid trades: %+v\n", validTrades)
+	slog.Debug("valid trades", "trades", validTrades)
 	return validTrades
 }
 
@@ -104,7 +103,7 @@ func CalculateVolumeWeightedAveragePrice(trades []Trade) float64 {
 	return weightedPriceSum / totalVolume
 }
 
-// Helper function to calculate quantiles
+// quantile helper function to calculate quantiles
 func quantile(data []float64, percentile float64) float64 {
 	index := (percentile) * float64(len(data)-1)
 	lower := int(math.Floor(index))
