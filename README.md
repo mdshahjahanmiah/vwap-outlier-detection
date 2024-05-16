@@ -90,9 +90,9 @@ This repository contains a Go application that calculates the VWAP for BTC/USD a
    
 2. **Run and test the application:**:
    ```sh
-      go mod tidy
-      go run main.go
-      go test ./trade
+   go mod tidy
+   go run cmd/main.go
+   go test ./trade
    ```
 
 
